@@ -7,3 +7,12 @@ Este proyecto se realizó como parte del curso de Principios de Sistemas Operati
 Se trata de un simulador de paginación o segmentación, según sea inicializado el simulador. Para esto, como ya se indicó, se requiere la implementación de un programa inicializador que solicite el espacio compartido al sistema operativo (Linux) para que el proceso que simula la creación de procesos que van a requerir ser ejecutados por cierto tiempo, así como un determinado tamaño en memoria y la especificación del tamaño de sus segmentos si es que el simulador fue iniciado en modo segmentación. También se requiere un programa 'espía' para la observación del estado del simulador y finalmente un programa dedicado a finiquitar el compartimiento de memoria.
 ## Desarrollo
 Según el enunciado del proyecto será implementado en C en Linux, utilizando las bibliotecas: sys/mman.h, sys/stat.h y fcntl.h, así como la opción -lrt al momento de compilación.
+### Estrategia de solución
+## Análisis de resultados
+## Lecciones aprendidas
+## Pruebas
+## mmap vs shmget
+https://stackoverflow.com/questions/21311080/linux-shared-memory-shmget-vs-mmap
+## Manual de usuario
+## Bitácora de trabajo
+## Bibliografía
