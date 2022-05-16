@@ -10,6 +10,8 @@ int main(){
 	printf("Key of shared memory is %d\n",shmid);
 	shared_memory=shmat(shmid,NULL,0); //process attached to shared memory segment
 	printf("Process attached at %p\n",shared_memory);
+	
+	printf("%c\n",*((char*)shared_memory+5));
 	printf("Data read from shared memory is : %s\n",(char *)shared_memory);
 
 }
