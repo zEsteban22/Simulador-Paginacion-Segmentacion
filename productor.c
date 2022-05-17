@@ -9,24 +9,13 @@
 sem_t semaforoProcesos;
   
 void* thread(void* arg){
-    //wait
     int i = *(int*)arg;
 
 	void *shared_memory;
 	char buff[100];
 	int shmid;
 
-
-	/*
-	printf("Enter some data to write to shared memory\n");
-	read(0,buff,100); //get some input from user
-	strcpy(shared_memory,buff); //data written to shared memory
-	*/
-
-
-
-
-
+	//wait
     sem_wait(&semaforoProcesos);
     printf("\nEntra proceso %i\n",i);
     int duracionProceso = rand() % (35 - 15 + 1) + 15; //(60 - 20 + 1) + 20;
@@ -35,10 +24,8 @@ void* thread(void* arg){
   	printf("Cantidad de paginas: %i\n",cantPaginas );
 
     //critical section
-    
-  	shmid=shmget((key_t)2345, 0, 0666);
-	//printf("Key of shared memory is %d\n",shmid);
-	shared_memory=shmat(shmid,NULL,0); //process attached to shared memory segment
+    shmid=shmget((key_t)2345, 0, 0666);
+	shared_memory=shmat(shmid,NULL,0);
 	//printf("Process attached at %p\n",shared_memory);
 	printf("Lee lo siguiente: %s\n",(char *)shared_memory);
 
@@ -46,7 +33,7 @@ void* thread(void* arg){
 	strcpy(mem,(char *)shared_memory);
 	size_t act = 0;
 	int pagLibres = 0;
-	while (mem[act] != '\0' && cantPaginas>pagLibres) {       /* Stop looping when we reach the null-character. */
+	while (mem[act] != '\0' && cantPaginas>pagLibres){
 		if(mem[act] == '0'){
 			pagLibres+=1;
 		}
@@ -70,10 +57,7 @@ void* thread(void* arg){
 	}
 
 	printf("Y escribe esto: %s\n", mem);;
-	strcpy(shared_memory,mem); //data written to shared memory
-
-
-
+	strcpy(shared_memory,mem);
 
     //signal
     printf("Proceso %i sale y hace signal...\n",i);
@@ -84,7 +68,6 @@ void* thread(void* arg){
 
     //wait
     sem_wait(&semaforoProcesos);
-
     c=i+'0';
     printf("\nEntra proceso %i\n",i);
     //critical section
@@ -135,22 +118,6 @@ void generarProcesos(){
 }
 
 int main(){
-	/*
-	int i;
-	void *shared_memory;
-	char buff[100];
-	int shmid;
-	shmid=shmget((key_t)2345, 0, 0666);
-	printf("Key of shared memory is %d\n",shmid);
-	shared_memory=shmat(shmid,NULL,0); //process attached to shared memory segment
-	printf("Process attached at %p\n",shared_memory);
-	printf("Data read from shared memory is : %s\n",(char *)shared_memory);
-	/*
-	printf("Enter some data to write to shared memory\n");
-	read(0,buff,100); //get some input from user
-	strcpy(shared_memory,buff); //data written to shared memory
-	*/
-
 	sem_init(&semaforoProcesos, 0, 1);
 
 	generarProcesos();	
