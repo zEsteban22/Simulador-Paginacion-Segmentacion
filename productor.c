@@ -11,10 +11,11 @@ sem_t semaforoProcesos;
 void* thread(void* arg){
     int i = *(int*)arg;
 
+    /*
 	void *shared_memory;
 	char buff[100];
 	int shmid;
-
+	*/
 	//wait
     sem_wait(&semaforoProcesos);
     printf("\nEntra proceso %i\n",i);
@@ -23,12 +24,13 @@ void* thread(void* arg){
     printf("Duracion del sleep: %i\n",duracionProceso );
   	printf("Cantidad de paginas: %i\n",cantPaginas );
 
+
     //critical section
+    /*
     shmid=shmget((key_t)2345, 0, 0666);
 	shared_memory=shmat(shmid,NULL,0);
 	//printf("Process attached at %p\n",shared_memory);
 	printf("Lee lo siguiente: %s\n",(char *)shared_memory);
-
 	char mem[100];
 	strcpy(mem,(char *)shared_memory);
 	size_t act = 0;
@@ -58,6 +60,46 @@ void* thread(void* arg){
 
 	printf("Y escribe esto: %s\n", mem);;
 	strcpy(shared_memory,mem);
+	*/
+  	int *arr;
+	int shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
+	arr = shmat(shmid, NULL, 0);
+
+    size_t act = 0;
+	int pagLibres = 0;
+
+	while (arr[act]!=-1 && cantPaginas>pagLibres){
+		if(arr[act] == 0){
+			pagLibres+=1;
+		}
+    	act++;
+	}
+	printf("Paginas libres:%i\n", pagLibres);
+	act=0;
+	if (pagLibres==cantPaginas){
+		while (pagLibres!=0) {
+			if(arr[act] == 0){
+				arr[act]=i;
+				pagLibres-=1;
+			}
+    		act++;
+		}	
+	}else{
+		printf("Paginas insuficientes\n");
+		sem_post(&semaforoProcesos);
+		pthread_exit(NULL);
+	}
+	int j=0;
+	while(arr[j]!=-1){
+        printf("%d  ", arr[j] );
+        j+=1;
+	}
+	printf("\n");
+
+
+
+
+
 
     //signal
     printf("Proceso %i sale y hace signal...\n",i);
@@ -68,6 +110,7 @@ void* thread(void* arg){
 
     //wait
     sem_wait(&semaforoProcesos);
+    /*
     c=i+'0';
     printf("\nEntra proceso %i\n",i);
     //critical section
@@ -87,6 +130,27 @@ void* thread(void* arg){
 
 	printf("Y escribe esto: %s\n",mem );
 	strcpy(shared_memory,mem); //data written to shared memory
+	*/
+
+    printf("\nEntra proceso %i\n",i);
+    //critical section
+	shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
+	arr = shmat(shmid, NULL, 0);
+
+    act=0;
+	while (pagLibres<cantPaginas) {
+		if(arr[act] == i){
+			arr[act]=0;
+			pagLibres+=1;
+		}
+		act++;
+	}	
+	j=0;
+	while(arr[j]!=-1){
+        printf("%d  ", arr[j] );
+        j+=1;
+	}
+	printf("\n");
 
     //signal
     printf("Proceso %i Libera Memoria y hace signal\n",i);
@@ -120,7 +184,11 @@ void generarProcesos(){
 int main(){
 	sem_init(&semaforoProcesos, 0, 1);
 
-	generarProcesos();	
+	generarProcesos();
+	/*
+	int i;
+	for(i=0; i<5; i++) 
+        printf("%d\n", arr[i] );	*/
 
 	sem_destroy(&semaforoProcesos);
     return 0;
