@@ -11,11 +11,6 @@ sem_t semaforoProcesos;
 void* thread(void* arg){
     int i = *(int*)arg;
 
-    /*
-	void *shared_memory;
-	char buff[100];
-	int shmid;
-	*/
 	//wait
     sem_wait(&semaforoProcesos);
     printf("\nEntra proceso %i\n",i);
@@ -26,41 +21,6 @@ void* thread(void* arg){
 
 
     //critical section
-    /*
-    shmid=shmget((key_t)2345, 0, 0666);
-	shared_memory=shmat(shmid,NULL,0);
-	//printf("Process attached at %p\n",shared_memory);
-	printf("Lee lo siguiente: %s\n",(char *)shared_memory);
-	char mem[100];
-	strcpy(mem,(char *)shared_memory);
-	size_t act = 0;
-	int pagLibres = 0;
-	while (mem[act] != '\0' && cantPaginas>pagLibres){
-		if(mem[act] == '0'){
-			pagLibres+=1;
-		}
-    	act++;
-	}
-	printf("Paginas libres:%i\n", pagLibres);
-	char c=i+'0';
-	act=0;
-	if (pagLibres==cantPaginas){
-		while (pagLibres!=0) {
-			if(mem[act] == '0'){
-				mem[act]=c;
-				pagLibres-=1;
-			}
-    		act++;
-		}	
-	}else{
-		printf("Paginas insuficientes\n");
-		sem_post(&semaforoProcesos);
-		pthread_exit(NULL);
-	}
-
-	printf("Y escribe esto: %s\n", mem);;
-	strcpy(shared_memory,mem);
-	*/
   	int *arr;
 	int shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
 	arr = shmat(shmid, NULL, 0);
@@ -97,10 +57,6 @@ void* thread(void* arg){
 	printf("\n");
 
 
-
-
-
-
     //signal
     printf("Proceso %i sale y hace signal...\n",i);
     sem_post(&semaforoProcesos);
@@ -110,28 +66,6 @@ void* thread(void* arg){
 
     //wait
     sem_wait(&semaforoProcesos);
-    /*
-    c=i+'0';
-    printf("\nEntra proceso %i\n",i);
-    //critical section
-  	shmid=shmget((key_t)2345, 0, 0666);
-	shared_memory=shmat(shmid,NULL,0);
-	printf("Lee lo siguiente: %s\n",(char *)shared_memory);
-	strcpy(mem,(char *)shared_memory);
-
-    act=0;
-	while (pagLibres<cantPaginas) {
-		if(mem[act] == c){
-			mem[act]='0';
-			pagLibres+=1;
-		}
-		act++;
-	}	
-
-	printf("Y escribe esto: %s\n",mem );
-	strcpy(shared_memory,mem); //data written to shared memory
-	*/
-
     printf("\nEntra proceso %i\n",i);
     //critical section
 	shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
