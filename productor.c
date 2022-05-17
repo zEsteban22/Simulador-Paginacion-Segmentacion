@@ -119,10 +119,6 @@ int main(){
 	sem_init(&semaforoProcesos, 0, 1);
 
 	generarProcesos();
-	/*
-	int i;
-	for(i=0; i<5; i++) 
-        printf("%d\n", arr[i] );	*/
 
 	sem_destroy(&semaforoProcesos);
     return 0;
