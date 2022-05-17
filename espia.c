@@ -4,14 +4,14 @@
 #include<sys/shm.h>
 #include<string.h>
 int main(){
-	void *shared_memory;
-	int shmid;
-	shmid=shmget((key_t)2345, 0, 0666);
+	int *arr;
+	int shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
 	printf("Key of shared memory is %d\n",shmid);
-	shared_memory=shmat(shmid,NULL,0); //process attached to shared memory segment
-	printf("Process attached at %p\n",shared_memory);
-	
-	printf("%c\n",*((char*)shared_memory+5));
-	printf("Data read from shared memory is : %s\n",(char *)shared_memory);
-
+	arr = shmat(shmid, NULL, 0);
+	int j=0;
+	while(arr[j]!=-1){
+        printf("%d  ", arr[j] );
+        j+=1;
+	}
+	printf("\n");
 }
