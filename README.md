@@ -32,7 +32,7 @@ Por lo tanto, mmap es más simple de usar y más conveniente que shm, por lo que
 
 Otra ventaja de mmap es que cuando la computadora se reinicia, mmap no se perderá, ya que guarda el archivo en disco, y este archivo también guarda la imagen de sincronización del sistema operativo.
 
-## Manual de usuario+
+## Manual de usuario
 La solución está planteada para ejecutarse en un ambiente Linux, para compilar en C mediante el compilador gcc.
 Primeramente, para la compilación de los 4 programas que componen este proyecto se cuenta con un archivo makefile, por lo que, para realizar la compilación se debe ejecutar el comando 'make'.
 
