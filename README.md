@@ -22,7 +22,17 @@ Según el enunciado del proyecto será implementado en C en Linux, utilizando la
 ## Pruebas
 
 ## mmap vs shmget
-https://stackoverflow.com/questions/21311080/linux-shared-memory-shmget-vs-mmap
+La principal diferencia entre mmap y shmget radica en que mmap es un poco más restrictiva, pero también es más simple o fácil de usar, shmget es un método más antiguo, por lo que tiene un soporte más completo.
+
+mmap mapea el contenido de un archivo a una sección de memoria y este archivo puede ser modificado y leído cuando se lee o modifica esta sección de memoria y los procesos pueden acceder al archivo de la forma que acceden a memoria, sin llamar las instrucciones del sistema (read, write).
+
+Mientras que shm mapea directamente el espacio de la memoria virtual del proceso a la memoria física.
+
+Por lo tanto, mmap es más simple de usar y más conveniente que shm, por lo que la mayoria de personas prefieren utilizar mmap.
+
+Otra ventaja de mmap es que cuando la computadora se reinicia, mmap no se perderá, ya que guarda el archivo en disco, y este archivo también guarda la imagen de sincronización del sistema operativo.
+
+https://programmer.group/shared-memory-performance-comparison-of-mmap-shm-and-mappedbytebuffer.html
 
 ## Manual de usuario+
 La solución está planteada para ejecutarse en un ambiente Linux, para compilar en C mediante el compilador gcc.
@@ -47,3 +57,6 @@ Del 8 al 14 de mayo se trabajó individualmente en una base para cada uno de los
 
 
 ## Bibliografía
+ExchangeStatus(2014). Linux shared memory: shmget() vs mmap()?. Extraído de: https://exchangetuts.com/linux-shared-memory-shmget-vs-mmap-1639552984343707
+
+Programmer Group(2021). Shared memory performance comparison of mmap, shm and MappedByteBuffer. Extraído de: https://programmer.group/shared-memory-performance-comparison-of-mmap-shm-and-mappedbytebuffer.html
