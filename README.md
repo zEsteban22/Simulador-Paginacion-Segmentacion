@@ -24,16 +24,22 @@ https://stackoverflow.com/questions/21311080/linux-shared-memory-shmget-vs-mmap
 ## Manual de usuario+
 La solución está planteada para ejecutarse en un ambiente Linux, para compilar en C mediante el compilador gcc.
 Primeramente, para la compilación de los 4 programas que componen este proyecto se cuenta con un archivo makefile, por lo que, para realizar la compilación se debe ejecutar el comando 'make'.
+
 Una vez compilados todos los programas, se debe realizar la ejecución del archivo llamado 'inicializador', el cuál se encarga de realizar la asignación de la memoria compartida que se utilizará.
+
 Seguidamente se debe ejecutar el archivo 'productor', en el que el usuario debe seleccionar el tipo de algoritmo que desea utilizar durante la ejecución, esta ventana se debe mantener activa siempre, ya que es la encargada de generar la simulación de procesos de forma constante.
+
 Si se desea conocer los detalles de la simulación, se debe ejecutar el archivo 'espia', el cuál muestra al usuario todos los datos correspondientes a esta.
 Cuando se necesite finaliazar la simulación se debe ejecutar el archivo 'finalizador', que es el encargado de detener la simulación y cerrar las instancias de memoria compartida.
 
 ## Bitácora de trabajo
 7 de mayo: Reunión inicial con todos los integrantes del grupo para acordar el método de trabajo general. Duración 1 hora.
+
 Del 8 al 14 de mayo se trabajó individualmente en una base para cada uno de los programas.
+
 15 de mayo: Reunión en la que ya se cuenta con una base inicial de los 4 programas y se analizan la estructura final que tendrá el programa productor. Duración 1 hora.
 16 de mayo: Se realizó parte del algoritmo de paginación.
+
 17 de mayo: Nos reunimos para finalizar el desarrollo de la simulación del algorimto de paginación y avanzar con la bitácora de procesos. Duración 2.5 horas
 
 
