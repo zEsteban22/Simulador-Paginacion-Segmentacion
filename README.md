@@ -53,6 +53,10 @@ Del 8 al 14 de mayo se trabajó individualmente en una base para cada uno de los
 
 17 de mayo: Nos reunimos para finalizar el desarrollo de la simulación del algorimto de paginación y avanzar con la bitácora de procesos. Duración 2.5 horas
 
+18 de mayo: Se trabajó de forma asincrónica en la elaboración de la bitácora. Duración 4 horas
+
+19 de mayo: Se trabajó de forma asincrónica en desarrollo del algoritmo de segmentación. Duración 3 horas
+
 
 ## Bibliografía
 ExchangeStatus(2014). Linux shared memory: shmget() vs mmap()?. Extraído de: https://exchangetuts.com/linux-shared-memory-shmget-vs-mmap-1639552984343707
