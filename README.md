@@ -1,5 +1,5 @@
 # Simulador-Paginacion-Segmentacion
-#### María José Cortez - 2018138674
+#### María José Cortés - 2018138674
 #### Esteban Cruz López - 2018104794
 #### Luis Venegas Leiva - 2019079322
 
