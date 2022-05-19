@@ -68,7 +68,8 @@ void registrar_salida(int pid)
 	registrar(registro);
 }
 
-void *thread(void *arg)
+
+void *threadPaginacion(void *arg)
 {
 	int i = *(int *)arg;
 	printf("\nEmpieza a crearse el proceso %i\n", i);
@@ -157,18 +158,115 @@ void *thread(void *arg)
 	pthread_exit(NULL);
 }
 
-void generarProcesos()
+void *threadSegmentacion(void *arg)
 {
+	int i = *(int *)arg;
+	printf("\nEmpieza a crearse el proceso %i\n", i);
+	int duracionProceso = rand() % (35 - 15 + 1) + 15; //(60 - 20 + 1) + 20;
+	const int cantSegmentos = rand() % (5 - 1 + 1) + 1;
+	int segmentSizes[cantSegmentos];
+	for (int j = 0; j < cantSegmentos; j++)
+		segmentSizes[j] = rand() % (3 - 1 + 1) + 1;
+	printf("Duracion del sleep: %i\n", duracionProceso);
+	printf("Cantidad de segmentos: %i\n", cantSegmentos);
+	int cantTotal;
+	for(int i=0;i<cantSegmentos;i+=1){
+		printf("%i  ",segmentSizes[i] );
+	}
+	printf("\n");
+
+	// inicio región crítica
+	if (sem_trywait(&semaforoProcesos) != 0)
+		registrar_espera(i);
+	else
+		sem_post(&semaforoProcesos);
+
+	sem_wait(&semaforoProcesos);
+	registrar_buscar(i);
+
+	int *arr;
+	int shmid = shmget((key_t)2345, 0, 0666 | IPC_EXCL);
+	arr = shmat(shmid, NULL, 0);
+
+	size_t act = 0;
+	size_t segmentoActual=0;
+	int pagLibres = 0;
+	char paginasAsignadas[20];
+	while (arr[act] != -1 && segmentoActual != cantSegmentos){
+		if (arr[act] == 0){
+			pagLibres += 1;
+			if(segmentSizes[segmentoActual]==pagLibres){
+				segmentoActual+=1;
+				while(pagLibres!=0){
+					pagLibres-=1;
+					arr[act-pagLibres]=i;
+					char s[4];
+					sprintf(s, "%02ld", act-pagLibres);
+					strcat(paginasAsignadas, s);
+					strcat(paginasAsignadas, ", ");
+				}
+			}
+		}
+		act+=1;
+	}
+
+	act=0;
+	if (segmentoActual != cantSegmentos){
+		while (arr[act] != -1){
+			if (arr[act] == i){
+				arr[act] = 0;
+			}
+			act+=1;
+		}
+		registrar_muerte(i);
+		printf("Proceso %i muere\n",i );
+		sem_post(&semaforoProcesos);
+		pthread_exit(NULL);
+	}
+	sem_post(&semaforoProcesos);
+
+	registrar_inicio(i, paginasAsignadas);
+
+	sleep(duracionProceso);
+
+	sem_wait(&semaforoProcesos);
+	shmid = shmget((key_t)2345, 0, 0666 | IPC_EXCL);
+	arr = shmat(shmid, NULL, 0);
+
+	act = 0;
+	while (arr[act] != -1){
+		if (arr[act] == i)
+			arr[act] = 0;
+		act+=1;
+	}
+
+	registrar_salida(i);
+
+	// signal
+	printf("\nProceso %i libera memoria y sale del contexto\n\n", i);
+	sem_post(&semaforoProcesos);
+
+	pthread_exit(NULL);
+}
+
+
+
+void generarProcesos(){
 	pthread_t threads[50];
 	int i = 0;
-	while (1)
-	{
+	while (1){
 		i += 1;
-
 		int espera = rand() % (25 - 5 + 1) + 5; //(60 - 30 + 1) + 30;
 		printf("\nProceso numero %i generado\n", i);
 		printf("Tiempo entre generación: %i\n", espera);
-		int ret = pthread_create(&threads[i], NULL, &thread, (void *)&i);
+		/*
+		if paginacion
+			int ret = pthread_create(&threads[i], NULL, &threadPaginacion, (void *)&i);
+		else
+			int ret = pthread_create(&threads[i], NULL, &threadSegmentacion, (void *)&i);
+		*/
+		int ret = pthread_create(&threads[i], NULL, &threadSegmentacion, (void *)&i);//ELiminar cuando se hace el if de arriba
+
 		if (ret != 0)
 		{
 			printf("Error al crear el thread");
@@ -179,8 +277,7 @@ void generarProcesos()
 	pthread_exit(NULL);
 }
 
-int main()
-{
+int main(){
 	signal(SIGINT, manejar_interrupcion);
 	setlocale(LC_ALL, "");
 	sem_init(&semaforoProcesos, 0, 1);
