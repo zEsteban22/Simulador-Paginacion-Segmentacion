@@ -190,6 +190,7 @@ int main()
 	FILE *fptr = fopen(bitacora, "r");
 	fgets(registro, 33, fptr);
 	fclose(fptr);
-	esPaginacion = registro[32] == 'p';
+	esPaginacion = registro[31] == 'p';
+	printf("¿Es paginación?\n%s.\n", esPaginacion ? "Sí" : "No");
 	generarProcesos();
 }
