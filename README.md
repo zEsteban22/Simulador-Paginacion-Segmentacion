@@ -19,7 +19,9 @@ Según el enunciado del proyecto será implementado en C en Linux, utilizando la
 
 ## Lecciones aprendidas
 Durante el desarrollo de este proyecto pudimos aprender los distintos métodos para manejar la memoria compartida en el lenguaje de programación c, en este caso con shm y mmap, así como los distintos comandos que permiten visualizar todos los segmentos de memoria compartidos en el sistema operativo.
+
 Además también aprendimos a aplicar los conocimientos adquiridos en el curso sobre semáforos y compendimos la forma en la que estos se crea, modifican y destruyen en el lenguaje de programación c.
+
 Este proyecto también nos ayudó a reforzar, aplicar e implementar en un lenguaje de programación una simulación los algoritmos de paginación y segmentación.
 
 ## Pruebas
