@@ -4,7 +4,7 @@ inicializador:
 	gcc inicializador.c -o inicializador
 	
 productor:
-	gcc productor.c -o productor
+	gcc productor.c -o productor -pthread
 	
 espia:
 	gcc espia.c -o espia
