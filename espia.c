@@ -5,22 +5,20 @@
 #include<string.h>
 #define BUFF_LEN 1000
 void push(int*arr, int pid){
-	for (int i=0; i < BUFF_LEN; i++){
+	for (int i=0; i < BUFF_LEN; i++)
 		if (arr[i] == 0){
 			arr[i] = pid;
 			break;
 		}
-	}
 }
 void pop(int*arr, int pid){
-	for (int i=0; i < BUFF_LEN; i++){
+	for (int i=0; i < BUFF_LEN && arr[i] != 0; i++)
 		if (arr[i] == pid){
-			arr[i] = arr[i+1];
-			for (int j=i+1; j < BUFF_LEN - 1; j++)
-				arr[i++] = arr[j+1];
+			i--;
+			while (++i < BUFF_LEN - 1)
+				arr[i] = arr[i + 1];
 			break;
 		}
-	}
 }
 void leer_bitacora(){
 	char* registro = NULL;
