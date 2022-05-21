@@ -48,9 +48,11 @@ Otra ventaja de mmap es que cuando la computadora se reinicia, mmap no se perder
 La solución está planteada para ejecutarse en un ambiente Linux, para compilar en C mediante el compilador gcc.
 Primeramente, para la compilación de los 4 programas que componen este proyecto se cuenta con un archivo makefile, por lo que, para realizar la compilación se debe ejecutar el comando 'make'.
 
-Una vez compilados todos los programas, se debe realizar la ejecución del archivo llamado 'inicializador', el cuál se encarga de realizar la asignación de la memoria compartida que se utilizará.
+Una vez compilados todos los programas, se debe realizar la ejecución del archivo llamado 'inicializador', el cuál se encarga de realizar la asignación de la memoria compartida que se utilizará. Este programa pedirá al usuario elegir el tipo de algoritmo que desea implementar para la simulación, además de controlar la cantidad de espacios que se utilizarán como espacios de memoria durante la simulación.
 
-Seguidamente se debe ejecutar el archivo 'productor', en el que el usuario debe seleccionar el tipo de algoritmo que desea utilizar durante la ejecución, esta ventana se debe mantener activa siempre, ya que es la encargada de generar la simulación de procesos de forma constante.
+Seguidamente se debe ejecutar el archivo 'productor', esta ventana se debe mantener activa siempre, ya que es la encargada de generar la simulación de procesos de forma constante, además muestra información de los procesos que son creados y el manejo de memoria compartida de estos.
+
+Cuando se desee detener la simulación se debe ejecutar el programa "finalizador", que se encarga de devolver los segmentos de memoria compartida y cerrar la bitácora.
 
 Si se desea conocer los detalles de la simulación, se debe ejecutar el archivo 'espia', el cuál muestra al usuario todos los datos correspondientes a esta.
 Cuando se necesite finalizar la simulación se debe ejecutar el archivo 'finalizador', que es el encargado de detener la simulación y cerrar las instancias de memoria compartida.
@@ -69,6 +71,8 @@ Del 8 al 14 de mayo se trabajó individualmente en una base para cada uno de los
 18 de mayo: Se trabajó de forma asincrónica en la elaboración de la bitácora. Duración 4 horas
 
 19 de mayo: Se trabajó de forma asincrónica en desarrollo del algoritmo de segmentación. Duración 3 horas
+
+20-21 de mayo: Se diseña el programa espía con todas sus funcionalidades (ver estado de memoria e información de procesos). Duración 4 horas
 
 ## Bibliografía
 
