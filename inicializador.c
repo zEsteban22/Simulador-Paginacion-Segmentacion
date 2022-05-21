@@ -3,8 +3,7 @@
 #include <unistd.h>
 #include <sys/shm.h>
 #include <string.h>
-int main()
-{
+int main() {
 	void *shared_memory;
 	char buff[100];
 	int shmid;
@@ -23,8 +22,7 @@ int main()
 	for (i = 0; i < tam; i++)
 		printf("%d ", arr[i]);
 	char r = '\0';
-	while (r != 'p' && r != 'P' && r != 's' && r != 'S')
-	{
+	while (r != 'p' && r != 'P' && r != 's' && r != 'S') {
 		printf("\nEscoja por favor el método de manejo de memoria: P - paginación o S - segmentación\n>");
 		scanf("%c", &r);
 		if (r != 'p' && r != 'P' && r != 's' && r != 'S')
