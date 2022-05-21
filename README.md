@@ -61,7 +61,6 @@ Una vez compilados todos los programas, se debe realizar la ejecución del archi
 Seguidamente se debe ejecutar el archivo 'productor', esta ventana se debe mantener activa siempre, ya que es la encargada de generar la simulación de procesos de forma constante, además muestra información de los procesos que son creados y el manejo de memoria compartida de estos.
 
 Si se desea conocer los detalles de la simulación, se debe ejecutar el archivo 'espia', el cuál muestra al usuario todos los datos correspondientes a esta.
-Cuando se necesite finalizar la simulación se debe ejecutar el archivo 'finalizador', que es el encargado de detener la simulación y cerrar las instancias de memoria compartida.
 
 Cuando se desee detener la simulación se debe ejecutar el programa "finalizador", que se encarga de devolver los segmentos de memoria compartida y cerrar la bitácora.
 
