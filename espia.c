@@ -1,9 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
-#include<sys/shm.h>
-#include<string.h>
+#include <sys/shm.h>
+#include <string.h>
+#include <semaphore.h>
+#include <fcntl.h>
 #define BUFF_LEN 1000
+sem_t * sem;
+sem_t * semBit;
+
 void push(int*arr, int pid){
 	for (int i=0; i < BUFF_LEN; i++)
 		if (arr[i] == 0){
@@ -29,6 +34,7 @@ void leer_bitacora(){
 	int procesosDormidos[BUFF_LEN] = {0};
 	int procesosTerminados[BUFF_LEN] = {0};
 	int procesosMuertos[BUFF_LEN] = {0};
+	sem_wait(semBit);
 	FILE* fptr = fopen("bitacora.txt", "r");
 	getline(&registro, &len, fptr); //Se ignora la primera línea.
 	while ((read = getline(&registro, &len, fptr)) != -1) {
@@ -59,6 +65,7 @@ void leer_bitacora(){
 		}
     }
 	fclose(fptr);
+	sem_post(semBit);
 	if (procesosEnEspera[0] == 0)
 		printf("No hay procesos en espera.\n");
 	else{
@@ -121,6 +128,7 @@ void leer_bitacora(){
 	}
 }
 void mostrar_memoria(){
+	sem_wait(sem);
 	int *arr;
 	int shmid = shmget((key_t)2345,0,0666|IPC_EXCL);
 	arr = shmat(shmid, NULL, 0);
@@ -130,13 +138,17 @@ void mostrar_memoria(){
         j+=1;
 	}
 	printf("\n");
+	sem_post(sem);
 }
 
 int main(){
+	sem=sem_open("/semaforoMemoria",  O_RDWR); 
+	semBit=sem_open("/semaforoBitacora",  O_RDWR); 
+
 	char r = '\0';
 	while(r != 's' && r != 'S'){
 		printf("¿Desea ver el estado de la (M)emoria, ver el estado de los (P)rocesos o (S)alir?\n> ");
-		scanf("%c",&r);
+		scanf(" %c",&r);
 		if (r != 's' && r != 'S' && r != 'm' && r != 'M' && r != 'p' && r != 'P') 
 			printf("Por favor escoja una opción válida, ingrese alguno de los caracteres puestos entre paréntesis.\n");
 		else {
@@ -149,5 +161,6 @@ int main(){
 			}
 		}
 	}
-
+	sem_close(sem);
+	sem_close(semBit);
 }

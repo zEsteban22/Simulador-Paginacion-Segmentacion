@@ -4,7 +4,19 @@
 #include <sys/shm.h>
 #include <string.h>
 #include <time.h>
+#include <semaphore.h>
+#include <fcntl.h>
+
+sem_t * sem;
+sem_t * semBit;
 int main() {
+	sem=sem_open("/semaforoMemoria",  O_RDWR); 
+	semBit=sem_open("/semaforoBitacora",  O_RDWR); 
+	sem_unlink("/semaforoMemoria"); 
+	sem_unlink("/semaforoBitacora"); 
+	sem_close(sem);
+	sem_close(semBit);
+
 	void *shared_memory;
 	int shmid;
 	shmid = shmget((key_t)2345, 0, 0666);

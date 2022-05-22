@@ -9,6 +9,9 @@
 #include <locale.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <fcntl.h>
+sem_t * sem;
+sem_t * semBit;
 
 sem_t semaforoProcesos;
 sem_t sB; // Este es el semaforo para escribir en bitacora
@@ -17,14 +20,14 @@ time_t inicio;
 bool esPaginacion;
 
 void manejar_interrupcion(int _) {
-	sem_wait(&sB);
-	sem_destroy(&semaforoProcesos);
-	sem_destroy(&sB);
+	sem_wait(semBit);
+	sem_destroy(sem);
+	sem_destroy(semBit);
 	exit(0);
 }
 
 void registrar(char* texto) {
-	sem_wait(&sB);
+	sem_wait(semBit);
 	time_t t;
 	time(&t);
 	char registro[200];
@@ -33,7 +36,7 @@ void registrar(char* texto) {
 	FILE* fptr = fopen(bitacora, "a");
 	fputs(registro, fptr);
 	fclose(fptr);
-	sem_post(&sB);
+	sem_post(semBit);
 }
 void registrar_buscar(int pid) {
 	char registro[69];
@@ -69,11 +72,19 @@ void* threadPaginacion(void* arg) {
 	printf("Duracion del sleep: %i\n", duracionProceso);
 	printf("Cantidad de paginas: %i\n", cantPaginas);
 	// inicio región crítica
+	/*
 	if (sem_trywait(&semaforoProcesos) != 0)
 		registrar_espera(i);
 	else
 		sem_post(&semaforoProcesos);
-	sem_wait(&semaforoProcesos);
+	sem_wait(&semaforoProcesos);*/
+	//sem_wait(sem);
+	if (sem_trywait(sem) != 0)
+		registrar_espera(i);
+	else
+		sem_post(sem);
+	//sem_wait(&semaforoProcesos);
+	sem_wait(sem);
 	registrar_buscar(i);
 
 	int* arr;
@@ -107,17 +118,20 @@ void* threadPaginacion(void* arg) {
 	}
 	else {
 		registrar_muerte(i);
-		sem_post(&semaforoProcesos);
+		//sem_post(&semaforoProcesos);
+		sem_post(sem);
 		pthread_exit(NULL);
 	}
 
-	sem_post(&semaforoProcesos);
+	//sem_post(&semaforoProcesos);
+	sem_post(sem);
 
 	registrar_inicio(i, paginasAsignadas);
 
 	sleep(duracionProceso);
 
-	sem_wait(&semaforoProcesos);
+	sem_wait(sem);
+	//sem_wait(&semaforoProcesos);
 	shmid = shmget((key_t)2345, 0, 0666 | IPC_EXCL);
 	arr = shmat(shmid, NULL, 0);
 
@@ -134,7 +148,8 @@ void* threadPaginacion(void* arg) {
 
 	// signal
 	printf("Proceso %i libera memoria y sale del contexto\n", i);
-	sem_post(&semaforoProcesos);
+	//sem_post(&semaforoProcesos);
+	sem_post(sem);
 
 	pthread_exit(NULL);
 }
@@ -156,12 +171,12 @@ void* threadSegmentacion(void* arg) {
 	printf("\n");
 
 	// inicio región crítica
-	if (sem_trywait(&semaforoProcesos) != 0)
+	if (sem_trywait(sem) != 0)
 		registrar_espera(i);
 	else
-		sem_post(&semaforoProcesos);
+		sem_post(sem);
 
-	sem_wait(&semaforoProcesos);
+	sem_wait(sem);
 	registrar_buscar(i);
 
 	int* arr;
@@ -200,16 +215,16 @@ void* threadSegmentacion(void* arg) {
 		}
 		registrar_muerte(i);
 		printf("Proceso %i muere\n", i);
-		sem_post(&semaforoProcesos);
+		sem_post(sem);
 		pthread_exit(NULL);
 	}
-	sem_post(&semaforoProcesos);
+	sem_post(sem);
 
 	registrar_inicio(i, paginasAsignadas);
 
 	sleep(duracionProceso);
 
-	sem_wait(&semaforoProcesos);
+	sem_wait(sem);
 	shmid = shmget((key_t)2345, 0, 0666 | IPC_EXCL);
 	arr = shmat(shmid, NULL, 0);
 
@@ -224,7 +239,7 @@ void* threadSegmentacion(void* arg) {
 
 	// signal
 	printf("\nProceso %i libera memoria y sale del contexto\n\n", i);
-	sem_post(&semaforoProcesos);
+	sem_post(sem);
 
 	pthread_exit(NULL);
 }
@@ -234,7 +249,7 @@ void generarProcesos() {
 	int i = 0;
 	while (1) {
 		i += 1;
-		int espera = rand() % 10; //(60 - 30 + 1) + 30;
+		int espera = rand() % (60 - 30 + 1) + 30;
 		printf("\nProceso numero %i generado\n", i);
 		printf("Tiempo entre generación: %i\n", espera);
 		int ret = pthread_create(&threads[i], NULL, esPaginacion ? &threadPaginacion : &threadSegmentacion, (void*)&i);
@@ -246,10 +261,11 @@ void generarProcesos() {
 }
 
 int main() {
+	sem=sem_open("/semaforoMemoria",  O_RDWR); 
+	semBit=sem_open("/semaforoBitacora",  O_RDWR); 
+
 	signal(SIGINT, manejar_interrupcion);
 	setlocale(LC_ALL, "");
-	sem_init(&semaforoProcesos, 0, 1);
-	sem_init(&sB, 0, 1);
 	time(&inicio);
 	char registro[33];
 	FILE* fptr = fopen(bitacora, "r");

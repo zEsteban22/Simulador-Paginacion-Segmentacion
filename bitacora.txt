@@ -1,0 +1,1 @@
+Se ha escogido el algoritmo de paginación.
