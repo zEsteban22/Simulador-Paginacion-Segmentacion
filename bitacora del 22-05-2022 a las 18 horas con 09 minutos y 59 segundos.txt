@@ -1,0 +1,13 @@
+Se ha escogido el algoritmo de segmentación.
+0000: El proceso con pid = 001 busca su campo en memoria.
+0000: El proceso con pid = 001 se empezó a ejecutar habiendo encontrado estos campos 00, 01, 02, 03, 04, 05, 06, .
+0019: El proceso con pid = 001 terminó de ejecutarse y salió de la memoria.
+0040: El proceso con pid = 002 busca su campo en memoria.
+0040: El proceso con pid = 002 se empezó a ejecutar habiendo encontrado estos campos 00, 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, .
+0064: El proceso con pid = 002 terminó de ejecutarse y salió de la memoria.
+0077: El proceso con pid = 003 busca su campo en memoria.
+0077: El proceso con pid = 003 se empezó a ejecutar habiendo encontrado estos campos 00, .
+0099: El proceso con pid = 003 terminó de ejecutarse y salió de la memoria.
+0137: El proceso con pid = 004 busca su campo en memoria.
+0137: El proceso con pid = 004 se empezó a ejecutar habiendo encontrado estos campos 00, 01, 02, 03, .
+0168: El proceso con pid = 004 terminó de ejecutarse y salió de la memoria.

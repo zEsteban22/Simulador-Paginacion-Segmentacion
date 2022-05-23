@@ -67,23 +67,15 @@ void registrar_salida(int pid) {
 void* threadPaginacion(void* arg) {
 	int i = *(int*)arg;
 	printf("\nEmpieza a crearse el proceso %i\n", i);
-	int duracionProceso = rand() % (35 - 15 + 1) + 15; //(60 - 20 + 1) + 20;
+	int duracionProceso = rand() % (60 - 20 + 1) + 20;
 	const int cantPaginas = rand() % (10 - 1 + 1) + 1;
 	printf("Duracion del sleep: %i\n", duracionProceso);
 	printf("Cantidad de paginas: %i\n", cantPaginas);
 	// inicio región crítica
-	/*
-	if (sem_trywait(&semaforoProcesos) != 0)
-		registrar_espera(i);
-	else
-		sem_post(&semaforoProcesos);
-	sem_wait(&semaforoProcesos);*/
-	//sem_wait(sem);
 	if (sem_trywait(sem) != 0)
 		registrar_espera(i);
 	else
 		sem_post(sem);
-	//sem_wait(&semaforoProcesos);
 	sem_wait(sem);
 	registrar_buscar(i);
 
@@ -118,12 +110,10 @@ void* threadPaginacion(void* arg) {
 	}
 	else {
 		registrar_muerte(i);
-		//sem_post(&semaforoProcesos);
 		sem_post(sem);
 		pthread_exit(NULL);
 	}
 
-	//sem_post(&semaforoProcesos);
 	sem_post(sem);
 
 	registrar_inicio(i, paginasAsignadas);
@@ -131,7 +121,6 @@ void* threadPaginacion(void* arg) {
 	sleep(duracionProceso);
 
 	sem_wait(sem);
-	//sem_wait(&semaforoProcesos);
 	shmid = shmget((key_t)2345, 0, 0666 | IPC_EXCL);
 	arr = shmat(shmid, NULL, 0);
 
@@ -148,7 +137,6 @@ void* threadPaginacion(void* arg) {
 
 	// signal
 	printf("Proceso %i libera memoria y sale del contexto\n", i);
-	//sem_post(&semaforoProcesos);
 	sem_post(sem);
 
 	pthread_exit(NULL);
@@ -157,7 +145,7 @@ void* threadPaginacion(void* arg) {
 void* threadSegmentacion(void* arg) {
 	int i = *(int*)arg;
 	printf("\nEmpieza a crearse el proceso %i\n", i);
-	int duracionProceso = rand() % (35 - 15 + 1) + 15; //(60 - 20 + 1) + 20;
+	int duracionProceso = rand() % (60 - 20 + 1) + 20;
 	const int cantSegmentos = rand() % (5 - 1 + 1) + 1;
 	int segmentSizes[cantSegmentos];
 	for (int j = 0; j < cantSegmentos; j++)

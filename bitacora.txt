@@ -1,1 +1,1 @@
-Se ha escogido el algoritmo de paginación.
+0171: El proceso con pid = 005 busca su campo en memoria.
