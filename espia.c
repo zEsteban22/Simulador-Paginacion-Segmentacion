@@ -38,7 +38,7 @@ void leer_bitacora(){
 	FILE* fptr = fopen("bitacora.txt", "r");
 	getline(&registro, &len, fptr); //Se ignora la primera línea.
 	while ((read = getline(&registro, &len, fptr)) != -1) {
-		char*last=registro+30;
+		char*last = registro+30;
 		int pid = (int) strtol(registro + 27, &last, 10);
         switch (registro[31]) {
 			case 's'://Se empezó a ejecutar -> sacar de en búsqueda y meter a dormidos

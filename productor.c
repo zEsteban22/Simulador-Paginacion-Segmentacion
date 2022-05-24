@@ -73,11 +73,11 @@ void* threadPaginacion(void* arg) {
 	printf("Cantidad de paginas: %i\n", cantPaginas);
 	
 	// inicio región crítica
-	if (sem_trywait(sem) != 0)
+	if (sem_trywait(sem) != 0){
 		registrar_espera(i);
-	else
-		sem_post(sem);
-	sem_wait(sem);
+		sem_wait(sem);
+	}
+	
 	registrar_buscar(i);
 
 	int* arr;
@@ -158,12 +158,11 @@ void* threadSegmentacion(void* arg) {
 	printf("\n");
 
 	// inicio región crítica
-	if (sem_trywait(sem) != 0)
+	if (sem_trywait(sem) != 0){
 		registrar_espera(i);
-	else
-		sem_post(sem);
-
-	sem_wait(sem);
+		sem_wait(sem);
+	}
+	
 	registrar_buscar(i);
 
 	int* arr;
