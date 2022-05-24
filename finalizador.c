@@ -16,13 +16,11 @@ int main() {
 	sem_unlink("/semaforoBitacora"); 
 	sem_close(sem);
 	sem_close(semBit);
-
 	void *shared_memory;
 	int shmid;
 	shmid = shmget((key_t)2345, 0, 0666);
 	printf("Llave de la memoria compartida: %d\n", shmid);
-	shared_memory = shmat(shmid, NULL, 0); // process attached to shared memory segment
-	// Eliminar el segmento de memoria
+	shared_memory = shmat(shmid, NULL, 0);
 	shmdt(shared_memory);
 	shmctl(shmid, IPC_RMID, NULL);
 	if (shmid >= 0)
