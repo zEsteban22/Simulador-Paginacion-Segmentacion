@@ -2,13 +2,26 @@
 #### María José Cortés - 2018138674
 #### Esteban Cruz López - 2018104794
 #### Luis Venegas Leiva - 2019079322
-
-## Introducción
+## Indice
+1. [Introducción](#i)
+2. [Desarrollo](#d)
+3. [Análisis de resultados](#a)
+4. [Lecciones aprendidas](#l)
+5. [Pruebas](#p)
+6. [mmap vs shmget](#vs)
+7. [Manual de usuario](#man)
+8. [Bitácora](#bit)
+9. [Bibliografía](#bib)
+<div id="i"/>
+## Introducción 
 Este proyecto se realizó como parte del curso de Principios de Sistemas Operativos de la carrera de Ingeniería en Computación en el Instituto Tecnológico de Costa Rica en el primer semestre de 2022 con la profesora Erika Marín Shumann.
 
 Se trata de un simulador de paginación o segmentación, según sea inicializado el simulador. Para esto, según fue mencionado, se requiere la implementación de un programa inicializador que solicite el espacio compartido al sistema operativo (Linux) para que el programa productor.c simule la creación y ejecución de procesos que van a requerir ser ejecutados por cierto tiempo, así como un determinado tamaño en memoria y la especificación del tamaño de sus segmentos si es que el simulador fue iniciado en modo segmentación.
 
 También se requiere un programa 'espía' para la observación del estado del simulador y finalmente un programa dedicado a finiquitar el compartimiento de memoria.
+
+
+<div id="d"/>
 ## Desarrollo
 Según el enunciado del proyecto será implementado en C en Linux, utilizando la biblioteca sys/shm.h para generar los compartimientos de memoria. También se hizo uso del manejo de versiones que provee github y de los semáforos e hilos que provee pthreads.
 
@@ -26,6 +39,8 @@ Logrando que cuando el espía busca por la información para mostrársela al usu
 También los programas se comunican por medio de la bitácora, ya que como los procesos imprimen ahí todos los cambios de estado que presenten, el programa espía lee estos cambios de estado para concluir el estado actual de los procesos.\
 Finalmente el finalizador ejecuta el siguiente código para eliminar los semáforos y cerrar la memoria compartida, finiquitando la simulación poniendole fecha de fin a la bitácora.\
 ![finalizador](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/finalizador.png)\
+
+<div id="a"/>
 ## Análisis de resultados
 Las funcionalidades se encuentran implementadas al 100%, cada uno de los programas cumple con su función a la perfeción, generándo bitácoras como la siguiente:\
 ![bitacora](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/bitacora.png)\
@@ -47,6 +62,7 @@ Por programa, las funciones completadas son las siguientes:
 - Devolver los recursos que se solicitaron en el inicializador.
 - Cerrar la bitácora.
 
+<div id="l"/>
 ## Lecciones aprendidas
 
 Durante el desarrollo de este proyecto pudimos aprender los distintos métodos para manejar la memoria compartida en el lenguaje de programación c, en este caso con shm y mmap, así como los distintos comandos que permiten visualizar todos los segmentos de memoria compartidos en el sistema operativo.
@@ -55,6 +71,7 @@ Además también aprendimos a aplicar los conocimientos adquiridos en el curso s
 
 Este proyecto también nos ayudó a reforzar, aplicar e implementar en un lenguaje de programación una simulación los algoritmos de paginación y segmentación.
 
+<div id="p"/>
 ## Pruebas
 Para ejecutar una simulación con nuestro proyecto es bastante fácil si se puede utilizar el comando make para compilar todos los programas de una vez, pero si no basta con compilarlos de la siguiente forma:
 ```
@@ -78,7 +95,9 @@ El productor no requiere ninguna interación extra, pero el espía le va a solic
 ![sim](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/simulacion.png)\
 Una vez terminada la simulación se procede a interrumpir la ejecución del productor de procesos y a ejecutar el finalizador de la siguiente forma:\
 ![fin](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/fin.png)\
-Concluyendo así el ciclo de simulación de nuestro proyecto con el resultado de la bitácora generada.
+Concluyendo así el ciclo de simulación de nuestro proyecto con el resultado de la bitácora generada.\
+
+<div id="vs"/>
 ## mmap vs shmget
 
 La principal diferencia entre mmap y shmget radica en que mmap es un poco más restrictiva, pero también es más simple o fácil de usar, shmget es un método más antiguo, por lo que tiene un soporte más completo.
@@ -89,9 +108,9 @@ Mientras que shm mapea directamente el espacio de la memoria virtual del proceso
 
 Por lo tanto, mmap es más simple de usar y más conveniente que shm, por lo que la mayoria de personas prefieren utilizar mmap.
 
-Otra ventaja de mmap es que cuando la computadora se reinicia, mmap no se perderá, ya que guarda el archivo en disco, y este archivo también guarda la imagen de sincronización del sistema operativo.
+Otra ventaja de mmap es que cuando la computadora se reinicia, mmap no se perderá, ya que guarda el archivo en disco, y este archivo también guarda la imagen de sincronización del sistema operativo.\
 
-
+<div id="man"/>
 ## Manual de usuario
 
 La solución está planteada para ejecutarse en un ambiente Linux, para compilar en C mediante el compilador gcc.
@@ -106,6 +125,7 @@ Si se desea conocer los detalles de la simulación, se debe ejecutar el archivo 
 Cuando se desee detener la simulación se debe ejecutar el programa "finalizador", que se encarga de devolver los segmentos de memoria compartida y cerrar la bitácora.
 
 
+<div id="bit"/>
 ## Bitácora de trabajo
 
 7 de mayo: Reunión inicial con todos los integrantes del grupo para acordar el método de trabajo general. Duración 1 hora.
@@ -126,6 +146,7 @@ Del 8 al 14 de mayo se trabajó individualmente en una base para cada uno de los
 24 de mayo: Se le dio los últimos toques a la documentación y se entregó el proyecto. Duración 3 horas.
 
 
+<div id="bib"/>
 ## Bibliografía
 
 ExchangeStatus(2014). Linux shared memory: shmget() vs mmap()?. Extraído de: https://exchangetuts.com/linux-shared-memory-shmget-vs-mmap-1639552984343707
