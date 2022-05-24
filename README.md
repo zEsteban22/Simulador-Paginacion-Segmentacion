@@ -19,15 +19,15 @@ Para asegurar la comunicación y la sincronización de los procesos se utilizan 
 En la siguiente captura se muestra la sección del código que se considera crítica debido a que es allí donde los procesos buscan su espacio en memoria y si la encuentran se ubican en esos espacios, si no encuentra el espacio debe morir, como se puede observar al final de la región crítica.
 ![región crítica](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/region%20cr%C3%ADtica.png)\
 Note que lo primero que hace el proceso es tratar de pedir la memoria compartida, si logra pedirla el resultado es 0 y entonces puede entrar a la región crítica, sino el resultado es distinto a 0 y entra al if en el cual se registra la espera y se le obliga a esperar.
-Esta variable semáforo se inicializa en el inicializador y se comparte entre los procesos por medio de los métodos sem_unlink y sem_open, como se muestra acontinuación:
+Esta variable semáforo se inicializa en el inicializador y se comparte entre los procesos por medio de los métodos sem_unlink y sem_open, como se muestra acontinuación:\
 ![inicialización de semáforos](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/inicializaci%C3%B3n%20de%20sem%C3%A1foros.png)\
-Logrando que cuando el espía busca por la información para mostrársela al usuario, debe esperar si algún proceso está en la región crítica, como se muestra acontinuación:
+Logrando que cuando el espía busca por la información para mostrársela al usuario, debe esperar si algún proceso está en la región crítica, como se muestra acontinuación:\
 ![espía](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/espia.png)\
 También los programas se comunican por medio de la bitácora, ya que como los procesos imprimen ahí todos los cambios de estado que presenten, el programa espía lee estos cambios de estado para concluir el estado actual de los procesos.\
 Finalmente el finalizador ejecuta el siguiente código para eliminar los semáforos y cerrar la memoria compartida, finiquitando la simulación poniendole fecha de fin a la bitácora.\
 ![finalizador](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/finalizador.png)\
 ## Análisis de resultados
-Las funcionalidades se encuentran implementadas al 100%, cada uno de los programas cumple con su función a la perfeción, generándo bitácoras como la siguiente:
+Las funcionalidades se encuentran implementadas al 100%, cada uno de los programas cumple con su función a la perfeción, generándo bitácoras como la siguiente:\
 ![bitacora](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/bitacora.png)\
 En la sección de pruebas podrá encontrar más detalle de la ejecución de la simulación.
 Por programa, las funciones completadas son las siguientes:
@@ -67,16 +67,16 @@ Una vez compilado sin problema nuestro proyecto se puede proceder a ejecutarlo y
 ```
 ./inicializador
 ```
-El programa deberá mostrar algo similar a los siguiente:
+El programa deberá mostrar algo similar a los siguiente:\
 ![ejec_inic](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/ejec_inic.png)\
 Posteriormente se podrá ejecutar sin problema el productor y el espía, además de manera simultánea en varias terminales.
 ```
 ./productor
 ./espia
 ```
-El productor no requiere ninguna interación extra, pero el espía le va a solicitar si quiere ver la memoria o el estado de los procesos, como se muestra en la siguiente imágen:
+El productor no requiere ninguna interación extra, pero el espía le va a solicitar si quiere ver la memoria o el estado de los procesos, como se muestra en la siguiente imágen:\
 ![sim](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/simulacion.png)\
-Una vez terminada la simulación se procede a interrumpir la ejecución del productor de procesos y a ejecutar el finalizador de la siguiente forma:
+Una vez terminada la simulación se procede a interrumpir la ejecución del productor de procesos y a ejecutar el finalizador de la siguiente forma:\
 ![fin](https://github.com/zEsteban22/Simulador-Paginacion-Segmentacion/blob/main/resultados/fin.png)\
 Concluyendo así el ciclo de simulación de nuestro proyecto con el resultado de la bitácora generada.
 ## mmap vs shmget
