@@ -71,6 +71,7 @@ void* threadPaginacion(void* arg) {
 	const int cantPaginas = rand() % (10 - 1 + 1) + 1;
 	printf("Duracion del sleep: %i\n", duracionProceso);
 	printf("Cantidad de paginas: %i\n", cantPaginas);
+	
 	// inicio región crítica
 	if (sem_trywait(sem) != 0)
 		registrar_espera(i);
@@ -113,9 +114,7 @@ void* threadPaginacion(void* arg) {
 		sem_post(sem);
 		pthread_exit(NULL);
 	}
-
 	sem_post(sem);
-
 	registrar_inicio(i, paginasAsignadas);
 
 	sleep(duracionProceso);
